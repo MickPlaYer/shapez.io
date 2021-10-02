@@ -230,28 +230,23 @@ export class MetaPainterBuilding extends MetaBuilding {
                 entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
-                        directions: [enumDirection.left],
-                        filter: "shape",
-                    },
-                    {
-                        pos: new Vector(0, 0),
                         directions: [enumDirection.bottom],
-                        filter: "color",
+                        filter: "shape",
                     },
                     {
                         pos: new Vector(1, 0),
                         directions: [enumDirection.bottom],
-                        filter: "color",
+                        filter: "shape",
                     },
                     {
                         pos: new Vector(2, 0),
                         directions: [enumDirection.bottom],
-                        filter: "color",
+                        filter: "shape",
                     },
                     {
                         pos: new Vector(3, 0),
                         directions: [enumDirection.bottom],
-                        filter: "color",
+                        filter: "shape",
                     },
                 ]);
 
@@ -262,7 +257,7 @@ export class MetaPainterBuilding extends MetaBuilding {
                 entity.components.ItemProcessor.type = enumItemProcessorTypes.painterQuad;
                 entity.components.ItemProcessor.processingRequirement =
                     enumItemProcessorRequirements.painterQuad;
-                entity.components.ItemProcessor.inputsPerCharge = 5;
+                entity.components.ItemProcessor.inputsPerCharge = 4;
 
                 break;
             }

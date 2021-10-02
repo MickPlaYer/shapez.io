@@ -334,6 +334,32 @@ export class ShapeDefinition extends BasicSerializableObject {
         context.translate((w * dpi) / 2, (h * dpi) / 2);
         context.scale((dpi * w) / 23, (dpi * h) / 23);
 
+        const id = this.getHash();
+        if (id === "Sp----Sp:CpCpCpCp:Ry----Ry:--CrCr--") {
+            const sprite = Loader.getSprite("sprites/custom/tako.png");
+            sprite.draw(context, -11, -11, 22, 22);
+            return;
+        } else if (id === "CrCyCrCy") {
+            const sprite = Loader.getSprite("sprites/custom/cookie.png");
+            sprite.draw(context, -10, -10, 20, 20);
+            return;
+        } else if (id === "CrCyCrCy:CpCpCpCp") {
+            const sprite = Loader.getSprite("sprites/custom/tako_a.png");
+            sprite.draw(context, -11, -11, 22, 22);
+            return;
+        } else if (id === "--Sp----") {
+            const sprite = Loader.getSprite("sprites/custom/wah_0.png");
+            sprite.draw(context, -11, -11, 22, 22);
+            return;
+        } else if (id === "----Sp--") {
+            const sprite = Loader.getSprite("sprites/custom/wah_1.png");
+            sprite.draw(context, -11, -11, 22, 22);
+            return;
+        } else if (id === "------Sp") {
+            const sprite = Loader.getSprite("sprites/custom/wah_2.png");
+            sprite.draw(context, -11, -11, 22, 22);
+            return;
+        }
         context.fillStyle = "#e9ecf7";
 
         const quadrantSize = 10;
@@ -343,16 +369,29 @@ export class ShapeDefinition extends BasicSerializableObject {
         context.beginCircle(0, 0, quadrantSize * 1.15);
         context.fill();
 
-        if (this.getHash() === "Sp----Sp:CpCpCpCp:Ry----Ry:--CrCr--") {
-            const sprite = Loader.getSprite("sprites/custom/tako.png");
-            sprite.draw(context, -11, -11, 22, 22);
-            return;
-        }
-
         for (let layerIndex = 0; layerIndex < this.layers.length; ++layerIndex) {
             const quadrants = this.layers[layerIndex];
 
             const layerScale = Math.max(0.1, 0.9 - layerIndex * 0.22);
+
+            if (
+                enumSubShape.circle === quadrants[0].subShape &&
+                quadrants[0].subShape === quadrants[1].subShape &&
+                quadrants[1].subShape === quadrants[2].subShape &&
+                quadrants[2].subShape === quadrants[3].subShape &&
+                quadrants[0].color === quadrants[1].color &&
+                quadrants[1].color === quadrants[2].color &&
+                quadrants[2].color === quadrants[3].color
+            ) {
+                const { color } = quadrants[0];
+                context.fillStyle = enumColorsToHexCode[color];
+                context.strokeStyle = THEME.items.outline;
+                context.lineWidth = THEME.items.outlineWidth;
+                context.beginCircle(0, 0, (quadrantSize - 1) * layerScale);
+                context.fill();
+                context.stroke();
+                continue;
+            }
 
             for (let quadrantIndex = 0; quadrantIndex < 4; ++quadrantIndex) {
                 if (!quadrants[quadrantIndex]) {
@@ -610,17 +649,18 @@ export class ShapeDefinition extends BasicSerializableObject {
      * @param {[enumColors, enumColors, enumColors, enumColors]} colors
      */
     cloneAndPaintWith4Colors(colors) {
-        const newLayers = this.internalCloneLayers();
+        return ShapeDefinition.fromShortKey("Sp----Sp:CpCpCpCp:Ry----Ry:--CrCr--");
+        // const newLayers = this.internalCloneLayers();
 
-        for (let layerIndex = 0; layerIndex < newLayers.length; ++layerIndex) {
-            const quadrants = newLayers[layerIndex];
-            for (let quadrantIndex = 0; quadrantIndex < 4; ++quadrantIndex) {
-                const item = quadrants[quadrantIndex];
-                if (item) {
-                    item.color = colors[quadrantIndex] || item.color;
-                }
-            }
-        }
-        return new ShapeDefinition({ layers: newLayers });
+        // for (let layerIndex = 0; layerIndex < newLayers.length; ++layerIndex) {
+        //     const quadrants = newLayers[layerIndex];
+        //     for (let quadrantIndex = 0; quadrantIndex < 4; ++quadrantIndex) {
+        //         const item = quadrants[quadrantIndex];
+        //         if (item) {
+        //             item.color = colors[quadrantIndex] || item.color;
+        //         }
+        //     }
+        // }
+        // return new ShapeDefinition({ layers: newLayers });
     }
 }
