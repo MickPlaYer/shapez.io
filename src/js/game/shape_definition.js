@@ -2,6 +2,7 @@ import { makeOffscreenBuffer } from "../core/buffer_utils";
 import { globalConfig } from "../core/config";
 import { smoothenDpi } from "../core/dpi_manager";
 import { DrawParameters } from "../core/draw_parameters";
+import { Loader } from "../core/loader";
 import { Vector } from "../core/vector";
 import { BasicSerializableObject, types } from "../savegame/serialization";
 import { enumColors, enumColorsToHexCode, enumColorToShortcode, enumShortcodeToColor } from "./colors";
@@ -341,6 +342,12 @@ export class ShapeDefinition extends BasicSerializableObject {
         context.fillStyle = THEME.items.circleBackground;
         context.beginCircle(0, 0, quadrantSize * 1.15);
         context.fill();
+
+        if (this.getHash() === "Sp----Sp:CpCpCpCp:Ry----Ry:--CrCr--") {
+            const sprite = Loader.getSprite("sprites/custom/tako.png");
+            sprite.draw(context, -11, -11, 22, 22);
+            return;
+        }
 
         for (let layerIndex = 0; layerIndex < this.layers.length; ++layerIndex) {
             const quadrants = this.layers[layerIndex];
